@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azillll.exe 🎮</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap');
+
+:root {
+  --cream:#fff9e9;
+  --yellow:#ffe58a;
+  --dark:#493d2c;
+  --orange:#ffae57;
+  --pink:#ffc8d8;
+  --green:#cce8bd;
+}
+
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  min-height:100vh;
+  padding:18px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:var(--dark);
+  font-family:'Baloo 2',sans-serif;
+  background-color:var(--cream);
+  background-image:radial-gradient(#f5d98a 1.5px,transparent 1.5px);
+  background-size:25px 25px;
+}
+
+button {
+  cursor:pointer;
+  font:700 1rem 'Baloo 2',sans-serif;
+  color:var(--dark);
+  background:white;
+  border:2px solid var(--dark);
+  border-radius:13px;
+  padding:9px 16px;
+  box-shadow:0 4px 0 var(--dark);
+  transition:.15s;
+}
+
+button:hover { transform:translateY(-2px) rotate(-1deg); }
+button:active { transform:translateY(3px); box-shadow:0 1px 0 var(--dark); }
+button:disabled { opacity:.45; cursor:not-allowed; }
+
+.game {
+  width:100%;
+  max-width:560px;
+  overflow:hidden;
+  background:#fffdf6;
+  border:3px solid var(--dark);
+  border-radius:24px;
+  box-shadow:8px 8px 0 var(--dark);
+}
+
+.topbar {
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  background:var(--yellow);
+  border-bottom:3px solid var(--dark);
+  font-weight:800;
+}
+
+.pixel { font-family:'Fredoka',sans-serif; letter-spacing:1px; }
+
+.status {
+  background:white;
+  border:2px solid var(--dark);
+  border-radius:9px;
+  padding:3px 9px;
+  font-size:.85rem;
+}
+
+.content {
+  display:none;
+  min-height:440px;
+  padding:25px 22px;
+  text-align:center;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  animation:appear .3s ease;
+}
+
+.content.active { display:flex; }
+
+@keyframes appear {
+  from { opacity:0; transform:translateY(8px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.tag {
+  display:inline-block;
+  padding:4px 12px;
+  border:2px solid var(--dark);
+  border-radius:9px;
+  background:var(--green);
+  font-weight:800;
+  transform:rotate(-2deg);
+}
+
+h1,h2,p { margin:10px 0; }
+h1 {
+  font:700 clamp(2.1rem,8vw,3.3rem)/1.08 'Fredoka',sans-serif;
+}
+h2 { font:600 1.8rem 'Fredoka',sans-serif; }
+p { font-size:1.03rem; line-height:1.5; }
+.sub { opacity:.75; font-size:.9rem; }
+
+.emoji {
+  font-size:5rem;
+  margin:12px 0;
+  filter:drop-shadow(3px 4px 0 #f1d59a);
+}
+
+.card {
+  width:100%;
+  padding:14px;
+  margin-top:12px;
+  background:#fff5d7;
+  border:2px dashed var(--dark);
+  border-radius:16px;
+}
+
+.actions {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+  margin-top:17px;
+}
+
+.primary { background:var(--yellow); }
+.pink { background:var(--pink); }
+.green { background:var(--green); }
+
+.game-footer {
+  padding:12px 15px;
+  background:#fff2ce;
+  border-top:3px dashed var(--dark);
+}
+
+.progress-info {
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  font-size:.85rem;
+  font-weight:800;
+}
+
+.track {
+  height:12px;
+  margin-top:6px;
+  overflow:hidden;
+  background:white;
+  border:2px solid var(--dark);
+  border-radius:20px;
+}
+
+.fill {
+  width:16.6%;
+  height:100%;
+  background:var(--orange);
+  transition:width .3s;
+}
+
+.nav {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:13px;
+}
+
+.nav button { padding:7px 12px; font-size:.9rem; }
+
+.cake {
+  border:0;
+  box-shadow:none;
+  background:transparent;
+  font-size:6rem;
+  padding:5px;
+  animation:bob 2s infinite ease-in-out;
+}
+
+.cake:hover { box-shadow:none; transform:scale(1.08) rotate(5deg); }
+
+@keyframes bob {
+  0%,100% { translate:0 0; }
+  50% { translate:0 -7px; }
+}
+
+.meter {
+  width:100%;
+  margin-top:12px;
+  padding:10px;
+  background:white;
+  border:2px solid var(--dark);
+  border-radius:12px;
+}
+
+.meter .fill { background:#80bd72; width:0; }
+
+.gallery {
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+  margin-top:15px;
+}
+
+.photo {
+  min-width:0;
+  padding:5px 5px 9px;
+  background:white;
+  border:2px solid var(--dark);
+  box-shadow:3px 3px 0 #e9d8ae;
+  transform:rotate(-2deg);
+}
+
+.photo:nth-child(2) { transform:rotate(2deg) translateY(8px); }
+.photo:nth-child(3) { transform:rotate(-1deg); }
+
+.photo img {
+  display:block;
+  width:100%;
+  height:112px;
+  object-fit:cover;
+  background:#fff0c7;
+  border:1px solid #e5d6b6;
+}
+
+.photo small {
+  display:block;
+  margin-top:5px;
+  font-size:.76rem;
+  font-weight:800;
+}
+
+.note {
+  width:100%;
+  padding:16px;
+  margin-top:12px;
+  background:#fff4c8;
+  border:2px solid var(--dark);
+  border-radius:5px 17px 7px 17px;
+  text-align:left;
+  transform:rotate(-.5deg);
+}
+
+.note p { font-size:1rem; }
+
+.toast {
+  min-height:28px;
+  margin-top:10px;
+  font-weight:800;
+}
+
+.ending {
+  padding:16px;
+  margin-top:12px;
+  background:#fff3ca;
+  border:3px dotted var(--dark);
+  border-radius:18px;
+}
+
+.signature { font-size:.85rem; opacity:.7; margin-top:17px; }
+
+.float {
+  position:fixed;
+  z-index:5;
+  pointer-events:none;
+  animation:fly 1.2s forwards;
+  font-size:1.5rem;
+}
+
+@keyframes fly {
+  to { transform:translateY(-140px) rotate(25deg); opacity:0; }
+}
+
+.music-button {
+  padding:5px 9px;
+  font-size:.8rem;
+  background:#fffdf6;
+  box-shadow:0 2px 0 var(--dark);
+}
+
+@media(max-width:420px) {
+  body { padding:12px; }
+  .content { padding:22px 14px; min-height:430px; }
+  .photo img { height:85px; }
+  .photo small { font-size:.67rem; }
+  .gallery { gap:6px; }
+}
+</style>
+</head>
+
+<body>
+
+<main class="game">
+  <header class="topbar">
+    <span class="pixel">AZILLLL.EXE 🎮</span>
+    <button class="music-button" id="musicBtn" onclick="toggleMusic()">🔔 MUSIC: OFF</button>
+  </header>
+
+  <section class="content active">
+    <span class="tag">SPECIAL GAME UPDATE</span>
+    <div class="emoji">🕹️</div>
+    <h1>HEY, AZILLLL!</h1>
+    <p>Karakter utama hari ini resmi naik level!</p>
+    <div class="card">
+      <p><b>QUEST:</b> Merayakan hari lahirmu 🎂</p>
+      <p><b>DIFFICULTY:</b> Sok cool, padahal ultah.</p>
+      <p><b>REWARD:</b> Rahasia. Main dulu.</p>
+    </div>
+    <div class="actions">
+      <button class="primary" onclick="startGame()">▶ START GAME</button>
+    </div>
+    <p class="sub">Peringatan: umur tidak bisa di-undo.</p>
+  </section>
+
+  <section class="content">
+    <span class="tag">QUEST 01 / STATUS CHECK</span>
+    <div class="emoji">📊</div>
+    <h2>Friendship Stats</h2>
+    <p>Hasil pemeriksaan karakter Azillll...</p>
+    <div class="card">
+      <p>Kelakuan random: <b>999+</b></p>
+      <p>Skill bikin ketawa: <b>terdeteksi</b></p>
+      <p>Mode menyebalkan: <b>kadang aktif</b></p>
+      <p>Level teman: <b>LEGENDARY</b></p>
+    </div>
+    <div class="meter">
+      <b>Friendship EXP: MAX!</b>
+      <div class="track"><div class="fill" style="width:100%"></div></div>
+      <small>EXP penuh. Tidak bisa ditukar uang.</small>
+    </div>
+    <div class="actions">
+      <button class="pink" onclick="showToast('Pemeriksaan selesai. Ternyata masih random. 😂')">Cek ulang 🔍</button>
+    </div>
+    <div class="toast" id="toast"></div>
+  </section>
+
+  <section class="content">
+    <span class="tag">QUEST 02 / BOSS BATTLE</span>
+    <h2>Misi: Tiup Lilin!</h2>
+    <p>Klik kue sebanyak <b>5 kali</b> untuk membuka hadiah.</p>
+    <button class="cake" onclick="tapCake()">🎂</button>
+    <div class="meter">
+      <b><span id="cakeCount">0</span> / 5 klik</b>
+      <div class="track"><div class="fill" id="cakeFill"></div></div>
+    </div>
+    <p class="sub" id="cakeMessage">Ayo, jangan cuma dilihatin kuenya.</p>
+    <button onclick="resetCake()">Ulangi misi ↻</button>
+  </section>
+
+  <section class="content">
+    <span class="tag">QUEST 03 / MEMORY UNLOCKED</span>
+    <div class="emoji">📸</div>
+    <h2>Evidence of Friendship</h2>
+    <p>Barang bukti bahwa kita pernah punya kenangan.</p>
+    <div class="gallery">
+      <div class="photo">
+        <img src="c:\Users\user\Pictures\Screenshots\Screenshot 2026-10-13 093912.png" alt="azill bengong">
+        <small>azill bengongg</small>
+      </div>
+      <div class="photo">
+        <img src="c:\Users\user\Pictures\Screenshots\Screenshot 2026-10-13 092301.png" alt="kita berdua">
+        <small>kita berduaa</small>
+      </div>
+      <div class="photo">
+        <img src="c:\Users\user\Pictures\Screenshots\Screenshot 2026-10-13 095634.png" alt="bonus foto aku">
+        <small>bonus muka aku</small>
+      </div>
+    </div>
+    <div class="card">
+      <b>Catatan admin:</b>
+      <p>INGETT AKU GAAA???</p>
+    </div>
+    <p class="sub">Caption bisa kamu ganti dengan cerita asli kalian!</p>
+  </section>
+
+  <section class="content">
+    <span class="tag">BONUS QUEST / DON'T PANIC</span>
+    <div class="emoji">🚨</div>
+    <h2>Azillll, ada masalah!</h2>
+    <p>Sistem menemukan sesuatu yang mencurigakan.</p>
+    <div class="card">
+      <b>WARNING 404:</b>
+      <p>Hadiah ulang tahun tidak ditemukan.</p>
+      <p>Klik tombol untuk memperbaiki sistem.</p>
+    </div>
+    <button class="pink" onclick="prank()">PERBAIKI SEKARANG</button>
+    <div class="toast" id="prankMessage"></div>
+  </section>
+
+  <section class="content">
+    <span class="tag">FINAL QUEST / UNLOCKED</span>
+    <div class="emoji">💛</div>
+    <h1>HAPPY BIRTHDAY!</h1>
+    <h2>AZILLLL 🥳</h2>
+    <div class="note">
+      <p>Selamat ulang tahunnn, Azillll!</p>
+      <p>Semoga dibertambahnya umur kamu ini, kamu tetep jadi manusia yang sama, yang pernah ketawa dan bercanda bareng aku, jangan lupa tetep jadi diri sendiri yaa, dan yang pasti tetep jadi manusia yang baik, terus kalo dikasih tau jangan ngeyelll</p>
+      <p>Makasih udah jadi salah satu manusia yang ada dicerita aku, makasihh udah mau jadi temen aku, makasihh udah jadi cegill barengg, love you moreeeeee</p>
+      <p> </p>
+      <p><b>—MIULL♡</b></p>
+    </div>
+    <div class="ending">
+      <div style="font-size:2rem">🏆</div>
+      <b>QUEST COMPLETED!</b>
+      <p>Hadiah utama: doa baik dan website absurd ini.</p>
+      <button class="primary" onclick="confetti()">CLAIM HAPPINESS ✨</button>
+    </div>
+    <p class="signature">coded with care, chaos & sedikit rasa gabut.</p>
+  </section>
+
+  <footer class="game-footer">
+    <div class="progress-info">
+      <span id="pageLabel">START SCREEN</span>
+      <span id="progressLabel">1 / 6</span>
+    </div>
+    <div class="track"><div class="fill" id="progressBar"></div></div>
+    <div class="nav">
+      <button id="prevBtn" onclick="move(-1)">← Back</button>
+      <span id="dots">● ○ ○ ○ ○ ○</span>
+      <button id="nextBtn" class="primary" onclick="move(1)">Next →</button>
+    </div>
+  </footer>
+</main>
+
+<script>
+const slides = [...document.querySelectorAll('.content')];
+
+const labels = [
+  'START SCREEN',
+  'FRIENDSHIP STATS',
+  'CAKE MISSION',
+  'MEMORY GALLERY',
+  'SURPRISE ALERT',
+  'FINAL QUEST'
+];
+
+let current = 0;
+let cakeClicks = 0;
+let audioCtx = null;
+let musicTimer = null;
+let musicEnabled = false;
+let noteIndex = 0;
+
+// Melodi original gaya game ceria: ting ting ting!
+const melody = [
+  [784,0.18], [988,0.18], [1175,0.28], [988,0.18],
+  [1047,0.18], [1319,0.3], [1175,0.2], [988,0.3],
+  [784,0.18], [880,0.18], [1047,0.28], [880,0.18],
+  [988,0.18], [1175,0.3], [1047,0.2], [880,0.35],
+  [1175,0.18], [1319,0.18], [1568,0.3], [1319,0.2],
+  [1175,0.18], [988,0.35], [880,0.2], [988,0.4]
+];
+
+function playNote(freq, duration) {
+  if (!audioCtx || !musicEnabled) return;
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+  gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.10, audioCtx.currentTime + 0.025);
+  gain.gain.exponentialRampToValueAtTime(
+    0.0001,
+    audioCtx.currentTime + duration * 0.85
+  );
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start();
+  osc.stop(audioCtx.currentTime + duration);
+}
+
+function musicLoop() {
+  if (!musicEnabled) return;
+
+  const [freq, duration] = melody[noteIndex];
+  playNote(freq, duration);
+  noteIndex = (noteIndex + 1) % melody.length;
+
+  // Jeda kecil supaya terdengar seperti musik game
+  musicTimer = setTimeout(musicLoop, duration * 1000 + 65);
+}
+
+async function toggleMusic() {
+  try {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    if (audioCtx.state === 'suspended') await audioCtx.resume();
+
+    musicEnabled = !musicEnabled;
+
+    if (musicEnabled) {
+      clearTimeout(musicTimer);
+      noteIndex = 0;
+      musicLoop();
+    } else {
+      clearTimeout(musicTimer);
+    }
+
+    updateMusicButton();
+  } catch (error) {
+    alert('Browser belum mendukung efek musik ini.');
+  }
+}
+
+function updateMusicButton() {
+  document.getElementById('musicBtn').textContent =
+    musicEnabled ? '🔔 MUSIC: ON' : '🔕 MUSIC: OFF';
+}
+
+async function startGame() {
+  if (!musicEnabled) await toggleMusic();
+  showSlide(1);
+  pop('🎮');
+}
+
+function showSlide(index) {
+  current = Math.max(0, Math.min(slides.length - 1, index));
+
+  slides.forEach((slide, i) => {
+    slide.classList.toggle('active', i === current);
+  });
+
+  document.getElementById('status').textContent =
+    'LV. ' + String(current + 1).padStart(2, '0');
+
+  document.getElementById('pageLabel').textContent = labels[current];
+  document.getElementById('progressLabel').textContent =
+    `${current + 1} / ${slides.length}`;
+
+  document.getElementById('progressBar').style.width =
+    `${(current + 1) / slides.length * 100}%`;
+
+  document.getElementById('dots').textContent =
+    slides.map((_, i) => i === current ? '●' : '○').join(' ');
+
+  document.getElementById('prevBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === slides.length - 1;
+
+  document.getElementById('nextBtn').textContent =
+    current === slides.length - 2 ? 'Finish →' : 'Next →';
+
+  document.getElementById('toast').textContent = '';
+}
+
+function move(direction) {
+  const next = current + direction;
+  if (next < 0 || next >= slides.length) return;
+
+  playUiSound();
+  showSlide(next);
+
+  if (next === slides.length - 1) pop('💛');
+}
+
+function playUiSound() {
+  if (!audioCtx) return;
+
+  // Bunyi klik kecil tambahan, tidak mengubah melodi latar.
+  if (audioCtx.state === 'running') {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.value = 1450;
+    gain.gain.setValueAtTime(0.055, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(
+      0.0001,
+      audioCtx.currentTime + 0.12
+    );
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.13);
+  }
+}
+
+function showToast(message) {
+  document.getElementById('toast').textContent = message;
+}
+
+function tapCake() {
+  if (cakeClicks >= 5) return;
+
+  cakeClicks++;
+  document.getElementById('cakeCount').textContent = cakeClicks;
+  document.getElementById('cakeFill').style.width = `${cakeClicks * 20}%`;
+
+  const messages = [
+    'Masih keras, coba lagi! 👀',
+    'Lilin mulai curiga...',
+    'Kuenya hampir menyerah.',
+    'Satu lagi, semangat!',
+    'MISSION COMPLETE! 🎉'
+  ];
+
+  document.getElementById('cakeMessage').textContent = messages[cakeClicks - 1];
+  playUiSound();
+  pop('✨');
+
+  if (cakeClicks === 5) {
+    document.getElementById('cakeMessage').textContent =
+      'Misi berhasil! Hadiah menunggumu di halaman berikutnya 😂';
+
+    setTimeout(() => showSlide(3), 1000);
+  }
+}
+
+function resetCake() {
+  cakeClicks = 0;
+  document.getElementById('cakeCount').textContent = '0';
+  document.getElementById('cakeFill').style.width = '0%';
+  document.getElementById('cakeMessage').textContent =
+    'Ayo, jangan cuma dilihatin kuenya.';
+}
+
+function prank() {
+  document.getElementById('prankMessage').textContent =
+    'SYSTEM FIXED! Hadiah ditemukan: kamu harus tetap bahagia 😭💛';
+  playUiSound();
+  pop('🎁');
+}
+
+function pop(symbol) {
+  for (let i = 0; i < 8; i++) {
+    const item = document.createElement('span');
+    item.className = 'float';
+    item.textContent = symbol;
+    item.style.left = Math.random() * 90 + 'vw';
+    item.style.top = (45 + Math.random() * 35) + 'vh';
+    document.body.appendChild(item);
+    setTimeout(() => item.remove(), 1300);
+  }
+}
+
+function confetti() {
+  const symbols = ['💛', '⭐', '🎉', '✨', '🎂'];
+
+  for (let i = 0; i < 20; i++) {
+    setTimeout(() => {
+      pop(symbols[Math.floor(Math.random() * symbols.length)]);
+    }, i * 70);
+  }
+
+  playUiSound();
+}
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'ArrowRight') move(1);
+  if (event.key === 'ArrowLeft') move(-1);
+});
+
+let touchStartX = 0;
+
+document.addEventListener('touchstart', event => {
+  touchStartX = event.changedTouches[0].screenX;
+}, { passive: true });
+
+document.addEventListener('touchend', event => {
+  const delta = event.changedTouches[0].screenX - touchStartX;
+  if (Math.abs(delta) > 90) move(delta < 0 ? 1 : -1);
+}, { passive: true });
+
+showSlide(0);
+</script>
+
+</body>
+</html>
